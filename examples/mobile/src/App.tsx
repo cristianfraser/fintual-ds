@@ -1,32 +1,69 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   SafeAreaView,
   ScrollView,
   View,
   StyleSheet,
   TouchableOpacity,
+  Animated,
+  LayoutAnimation,
+  Platform,
+  UIManager,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider, Text, Heading, useTheme } from '@fintual/design-system-react-native';
 
+// Enable LayoutAnimation on Android
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+// Configure LayoutAnimation for smooth transitions
+const configureLayoutAnimation = () => {
+  LayoutAnimation.configureNext({
+    duration: 300,
+    create: {
+      type: LayoutAnimation.Types.easeInEaseOut,
+      property: LayoutAnimation.Properties.opacity,
+    },
+    update: {
+      type: LayoutAnimation.Types.easeInEaseOut,
+    },
+  });
+};
+
 function AppContent(): JSX.Element {
   const { theme, setMode } = useTheme();
-  const mode = theme.mode;
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    // Trigger layout animation for smooth color transitions
+    configureLayoutAnimation();
+    
+    // Fade animation for smoother transition
+    fadeAnim.setValue(0);
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [theme.mode, fadeAnim]);
 
   const toggleMode = () => {
-    setMode(mode === 'light' ? 'dark' : 'light');
+    setMode(prevMode => prevMode === 'light' ? 'dark' : 'light');
   };
 
   return (
-      <SafeAreaView style={[
-        styles.container,
-        { backgroundColor: mode === 'dark' ? '#121212' : '#FFFFFF' }
-      ]}>
-        <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}
-        >
+      <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
+        <SafeAreaView style={[
+          styles.container,
+          { backgroundColor: theme.colors.background }
+        ]}>
+          <StatusBar style={theme.mode === 'dark' ? 'light' : 'dark'} />
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            style={styles.scrollView}
+          >
           <View style={styles.content}>
             <View style={styles.header}>
               <Heading level={1}>Fintual Design System</Heading>
@@ -35,13 +72,13 @@ function AppContent(): JSX.Element {
                 style={[
                   styles.button,
                   {
-                    backgroundColor: mode === 'dark' ? '#1E1E1E' : '#F8F9FA',
-                    borderColor: mode === 'dark' ? '#2E2E2E' : '#DEE2E6',
+                    backgroundColor: theme.colors.surface,
+                    borderColor: theme.colors.border,
                   }
                 ]}
               >
                 <Text color={'text'}>
-                  {mode === 'light' ? '🌙 Dark' : '☀️ Light'}
+                  {theme.mode === 'light' ? '🌙 Dark' : '☀️ Light'}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -119,8 +156,8 @@ function AppContent(): JSX.Element {
               <View style={[
                 styles.card,
                 {
-                  backgroundColor: mode === 'dark' ? '#1E1E1E' : '#F8F9FA',
-                  borderColor: mode === 'dark' ? '#2E2E2E' : '#DEE2E6',
+                  backgroundColor: theme.colors.surface,
+                  borderColor: theme.colors.border,
                 }
               ]}>
                 <Heading level={3} color="primary" style={styles.cardTitle}>
@@ -136,8 +173,9 @@ function AppContent(): JSX.Element {
               </View>
             </View>
           </View>
-        </ScrollView>
-      </SafeAreaView>
+          </ScrollView>
+        </SafeAreaView>
+      </Animated.View>
   );
 }
 

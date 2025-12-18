@@ -1,17 +1,24 @@
+import React from 'react';
 import { ThemeProvider, Text, Heading, useTheme } from '@fintual/design-system-react';
 import './App.css';
 
 function AppContent() {
   const { theme, setMode } = useTheme();
-  const mode = theme.mode;
 
   const toggleMode = () => {
     setMode(prevMode => prevMode === 'light' ? 'dark' : 'light');
   };
 
+  // Set CSS variable for scrollbar styling
+  React.useEffect(() => {
+    document.documentElement.style.setProperty('--theme-background', theme.colors.background);
+    document.documentElement.style.setProperty('--theme-surface', theme.colors.surface);
+    document.documentElement.style.setProperty('--theme-border', theme.colors.border);
+  }, [theme.colors.background, theme.colors.surface, theme.colors.border]);
+
   return (
       <div className="app" style={{ 
-        backgroundColor: mode === 'dark' ? '#121212' : '#FFFFFF',
+        backgroundColor: theme.colors.background,
         minHeight: '100vh',
         padding: '2rem',
         transition: 'background-color 0.3s ease',
@@ -26,12 +33,12 @@ function AppContent() {
                 borderRadius: '4px',
                 border: '1px solid',
                 cursor: 'pointer',
-                backgroundColor: mode === 'dark' ? '#1E1E1E' : '#F8F9FA',
-                color: mode === 'dark' ? '#FFFFFF' : '#212529',
-                borderColor: mode === 'dark' ? '#2E2E2E' : '#DEE2E6',
+                backgroundColor: theme.colors.surface,
+                color: theme.colors.text,
+                borderColor: theme.colors.border,
               }}
             >
-              {mode === 'light' ? '🌙 Dark' : '☀️ Light'}
+              {theme.mode === 'light' ? '🌙 Dark' : '☀️ Light'}
             </button>
           </div>
 
@@ -108,8 +115,8 @@ function AppContent() {
             <div style={{ 
               padding: '1.5rem', 
               borderRadius: '8px',
-              backgroundColor: mode === 'dark' ? '#1E1E1E' : '#F8F9FA',
-              border: `1px solid ${mode === 'dark' ? '#2E2E2E' : '#DEE2E6'}`,
+              backgroundColor: theme.colors.surface,
+              border: `1px solid ${theme.colors.border}`,
             }}>
               <Heading level={3} color="primary" style={{ marginBottom: '0.5rem' }}>
                 Welcome to Fintual
