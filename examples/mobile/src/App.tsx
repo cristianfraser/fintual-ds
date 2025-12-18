@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -7,17 +7,17 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { ThemeProvider, Text, Heading } from '@fintual/design-system-react-native';
+import { ThemeProvider, Text, Heading, useTheme } from '@fintual/design-system-react-native';
 
-function App(): JSX.Element {
-  const [mode, setMode] = useState<'light' | 'dark'>('light');
+function AppContent(): JSX.Element {
+  const { theme, setMode } = useTheme();
+  const mode = theme.mode;
 
   const toggleMode = () => {
     setMode(mode === 'light' ? 'dark' : 'light');
   };
 
   return (
-    <ThemeProvider mode={mode}>
       <SafeAreaView style={[
         styles.container,
         { backgroundColor: mode === 'dark' ? '#121212' : '#FFFFFF' }
@@ -40,7 +40,7 @@ function App(): JSX.Element {
                   }
                 ]}
               >
-                <Text color={mode === 'dark' ? 'text' : 'text'}>
+                <Text color={'text'}>
                   {mode === 'light' ? '🌙 Dark' : '☀️ Light'}
                 </Text>
               </TouchableOpacity>
@@ -138,7 +138,6 @@ function App(): JSX.Element {
           </View>
         </ScrollView>
       </SafeAreaView>
-    </ThemeProvider>
   );
 }
 
@@ -191,6 +190,14 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
 });
+
+function App(): JSX.Element {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+}
 
 export default App;
 

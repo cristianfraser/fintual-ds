@@ -3,33 +3,31 @@ import { Theme, createTheme, ColorMode } from '@fintual/design-system-core';
 
 interface ThemeContextValue {
   theme: Theme;
-  setMode: (mode: ColorMode) => void;
+  setMode: React.Dispatch<React.SetStateAction<ColorMode>>;
+
 }
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export interface ThemeProviderProps {
   children: ReactNode;
-  mode?: ColorMode;
+  initialMode?: ColorMode;
   theme?: Theme;
 }
 
 export function ThemeProvider({ 
   children, 
-  mode = 'light',
+  initialMode = 'light',
   theme: customTheme 
 }: ThemeProviderProps) {
-  const [currentMode, setCurrentMode] = React.useState<ColorMode>(mode);
+  const [mode, setMode] = React.useState<ColorMode>(initialMode);
+  
   const theme = React.useMemo(() => {
     if (customTheme) {
       return customTheme;
     }
-    return createTheme(currentMode);
-  }, [customTheme, currentMode]);
-
-  const setMode = React.useCallback((newMode: ColorMode) => {
-    setCurrentMode(newMode);
-  }, []);
+    return createTheme(mode);
+  }, [customTheme, mode]);
 
   const value = React.useMemo(() => ({
     theme,

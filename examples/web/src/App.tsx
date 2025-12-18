@@ -1,16 +1,15 @@
-import { useState } from 'react';
-import { ThemeProvider, Text, Heading } from '@fintual/design-system-react';
+import { ThemeProvider, Text, Heading, useTheme } from '@fintual/design-system-react';
 import './App.css';
 
-function App() {
-  const [mode, setMode] = useState<'light' | 'dark'>('light');
+function AppContent() {
+  const { theme, setMode } = useTheme();
+  const mode = theme.mode;
 
   const toggleMode = () => {
-    setMode(mode === 'light' ? 'dark' : 'light');
+    setMode(prevMode => prevMode === 'light' ? 'dark' : 'light');
   };
 
   return (
-    <ThemeProvider mode={mode}>
       <div className="app" style={{ 
         backgroundColor: mode === 'dark' ? '#121212' : '#FFFFFF',
         minHeight: '100vh',
@@ -126,6 +125,13 @@ function App() {
           </section>
         </div>
       </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
     </ThemeProvider>
   );
 }
