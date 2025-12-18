@@ -4,7 +4,7 @@ import {
   ScrollView,
   View,
   StyleSheet,
-  TouchableOpacity,
+  Switch,
   Animated,
   LayoutAnimation,
   Platform,
@@ -49,8 +49,8 @@ function AppContent(): JSX.Element {
     }).start();
   }, [theme.mode, fadeAnim]);
 
-  const toggleMode = () => {
-    setMode(prevMode => prevMode === 'light' ? 'dark' : 'light');
+  const handleToggle = (value: boolean) => {
+    setMode(value ? 'dark' : 'light');
   };
 
   return (
@@ -67,20 +67,22 @@ function AppContent(): JSX.Element {
           <View style={styles.content}>
             <View style={styles.header}>
               <Heading level={1}>Fintual Design System</Heading>
-              <TouchableOpacity
-                onPress={toggleMode}
-                style={[
-                  styles.button,
-                  {
-                    backgroundColor: theme.colors.surface,
-                    borderColor: theme.colors.border,
-                  }
-                ]}
-              >
-                <Text color={'text'}>
-                  {theme.mode === 'light' ? '🌙 Dark' : '☀️ Light'}
+              <View style={styles.toggleContainer}>
+                <Text color="textSecondary" variant="sm" style={styles.toggleLabel}>
+                  {theme.mode === 'light' ? '☀️ Light' : '🌙 Dark'}
                 </Text>
-              </TouchableOpacity>
+                <Switch
+                  value={theme.mode === 'dark'}
+                  onValueChange={handleToggle}
+                  trackColor={
+                    {
+                        false: theme.colors.border,
+                        true: theme.colors.textSecondary,
+                    }
+                  }
+                  thumbColor={Platform.OS === 'ios' && theme.mode === 'light' ? '#ffffff' : theme.colors.background}
+                />
+              </View>
             </View>
 
             <View style={styles.section}>
@@ -195,11 +197,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 24,
   },
-  button: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 4,
-    borderWidth: 1,
+  toggleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  toggleLabel: {
+    marginRight: 8,
   },
   section: {
     marginBottom: 32,

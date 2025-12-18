@@ -23,23 +23,28 @@ function AppContent() {
         padding: '2rem',
         transition: 'background-color 0.3s ease',
       }}>
+        <button 
+          onClick={toggleMode}
+          style={{
+            position: 'fixed',
+            top: '1rem',
+            right: '1rem',
+            padding: '0.5rem 1rem',
+            borderRadius: '4px',
+            border: '1px solid',
+            cursor: 'pointer',
+            backgroundColor: theme.colors.surface,
+            color: theme.colors.text,
+            borderColor: theme.colors.border,
+            zIndex: 1000,
+            transition: 'background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease',
+          }}
+        >
+          {theme.mode === 'light' ? '🌙 Dark' : '☀️ Light'}
+        </button>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ marginBottom: '2rem' }}>
             <Heading level={1}>Fintual Design System</Heading>
-            <button 
-              onClick={toggleMode}
-              style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '4px',
-                border: '1px solid',
-                cursor: 'pointer',
-                backgroundColor: theme.colors.surface,
-                color: theme.colors.text,
-                borderColor: theme.colors.border,
-              }}
-            >
-              {theme.mode === 'light' ? '🌙 Dark' : '☀️ Light'}
-            </button>
           </div>
 
           <section style={{ marginBottom: '3rem' }}>
