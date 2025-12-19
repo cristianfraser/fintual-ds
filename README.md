@@ -2,6 +2,11 @@
 
 A foundational Design System project that provides a unified solution for Fintual's web (React) and mobile (React Native) applications. Built with architectural decisions designed to last, featuring a dynamic color palette for Dark Mode support and distributable as NPM packages.
 
+<div align="center">
+  <img src="web.png" width="400" alt="Web Example" />
+  <img src="ios.png" width="400" alt="iOS Example" />
+</div>
+
 ## 🏗️ Architecture
 
 The Design System is organized as a monorepo with the following structure:
