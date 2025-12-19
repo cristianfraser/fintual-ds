@@ -7,6 +7,7 @@ This is a minimal example application demonstrating the usage of `@fintual/desig
 1. Install dependencies:
 
 ```bash
+nvm use
 npm install
 ```
 

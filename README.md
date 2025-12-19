@@ -282,4 +282,11 @@ npm run clean
 - Automated visual regression testing
 - Theme customization API
 
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## Chat logs
+
+There's a `chat.md` file containing Cursor chats, and a `chat-promts.md` file containing only the prompts.
 
