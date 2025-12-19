@@ -24,10 +24,10 @@ const variantMap = {
 export function Heading({
   children,
   level = 1,
-  weight = 'bold',
-  color = 'text',
-  align = 'left',
-  lineHeight = 'tight',
+  weight,
+  color,
+  align,
+  lineHeight,
   style,
   className,
 }: HeadingProps) {
@@ -36,12 +36,17 @@ export function Heading({
   const Component = `h${level}` as keyof JSX.IntrinsicElements;
 
   const headingStyle: CSSProperties = {
-    fontFamily: theme.typography.fontFamily.base,
+    // fontFamily is set globally, no need to set it here
+    // fontSize is set based on level (heading semantic sizing)
     fontSize: theme.typography.fontSize[variant],
-    fontWeight: theme.typography.fontWeight[weight],
-    lineHeight: theme.typography.lineHeight[lineHeight],
-    color: theme.colors[color],
-    textAlign: align,
+    // Only set fontWeight if weight is explicitly provided
+    ...(weight && { fontWeight: theme.typography.fontWeight[weight] }),
+    // Only set lineHeight if explicitly provided
+    ...(lineHeight && { lineHeight: theme.typography.lineHeight[lineHeight] }),
+    // Only set color if explicitly provided (defaults to body text color)
+    ...(color && { color: theme.colors[color] }),
+    // Only set textAlign if explicitly provided
+    ...(align && { textAlign: align }),
     margin: 0,
     ...style,
   };

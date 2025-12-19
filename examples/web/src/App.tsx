@@ -62,7 +62,9 @@ function AppContent() {
               <Heading level={3} style={{ marginBottom: '0.5rem' }}>Text Variants</Heading>
               <Text variant="xs">Extra Small Text (xs)</Text>
               <Text variant="sm">Small Text (sm)</Text>
-              <Text variant="base">Base Text (base)</Text>
+              <Text
+              // variant="base"
+              >Base Text (base)</Text>
               <Text variant="lg">Large Text (lg)</Text>
               <Text variant="xl">Extra Large Text (xl)</Text>
               <Text variant="2xl">2XL Text (2xl)</Text>
@@ -72,7 +74,9 @@ function AppContent() {
 
             <div style={{ marginBottom: '2rem' }}>
               <Heading level={3} style={{ marginBottom: '0.5rem' }}>Font Weights</Heading>
-              <Text weight="normal">Normal Weight</Text>
+              <Text
+              // weight="normal"
+              >Normal Weight</Text>
               <Text weight="medium">Medium Weight</Text>
               <Text weight="semibold">Semibold Weight</Text>
               <Text weight="bold">Bold Weight</Text>
@@ -80,7 +84,9 @@ function AppContent() {
 
             <div style={{ marginBottom: '2rem' }}>
               <Heading level={3} style={{ marginBottom: '0.5rem' }}>Colors</Heading>
-              <Text color="text">Default Text Color</Text>
+              <Text 
+              // color="text"
+              >Default Text Color</Text>
               <Text color="textSecondary">Secondary Text Color</Text>
               <Text color="textDisabled">Disabled Text Color</Text>
               <Text color="primary">Primary Color</Text>
@@ -93,7 +99,9 @@ function AppContent() {
 
             <div style={{ marginBottom: '2rem' }}>
               <Heading level={3} style={{ marginBottom: '0.5rem' }}>Text Alignment</Heading>
-              <Text align="left">Left Aligned Text</Text>
+              <Text 
+              // align="left"
+              >Left Aligned Text</Text>
               <Text align="center">Center Aligned Text</Text>
               <Text align="right">Right Aligned Text</Text>
             </div>
@@ -104,7 +112,9 @@ function AppContent() {
                 Tight Line Height - Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                 Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </Text>
-              <Text lineHeight="normal" style={{ marginBottom: '0.5rem' }}>
+              <Text 
+              // lineHeight="normal" 
+              style={{ marginBottom: '0.5rem' }}>
                 Normal Line Height - Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                 Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </Text>

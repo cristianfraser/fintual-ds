@@ -15,11 +15,11 @@ export interface TextProps {
 
 export function Text({
   children,
-  variant = 'base',
-  weight = 'normal',
-  color = 'text',
-  align = 'left',
-  lineHeight = 'normal',
+  variant,
+  weight,
+  color,
+  align,
+  lineHeight,
   as: Component = 'p',
   style,
   className,
@@ -27,12 +27,17 @@ export function Text({
   const { theme } = useTheme();
 
   const textStyle: CSSProperties = {
-    fontFamily: theme.typography.fontFamily.base,
-    fontSize: theme.typography.fontSize[variant],
-    fontWeight: theme.typography.fontWeight[weight],
-    lineHeight: theme.typography.lineHeight[lineHeight],
-    color: theme.colors[color],
-    textAlign: align,
+    // fontFamily is set globally, no need to set it here
+    // Only set fontSize if variant is explicitly provided
+    ...(variant && { fontSize: theme.typography.fontSize[variant] }),
+    // Only set fontWeight if weight is explicitly provided
+    ...(weight && { fontWeight: theme.typography.fontWeight[weight] }),
+    // Only set lineHeight if explicitly provided
+    ...(lineHeight && { lineHeight: theme.typography.lineHeight[lineHeight] }),
+    // Only set color if explicitly provided (defaults to body text color)
+    ...(color && { color: theme.colors[color] }),
+    // Only set textAlign if explicitly provided
+    ...(align && { textAlign: align }),
     margin: 0,
     ...style,
   };

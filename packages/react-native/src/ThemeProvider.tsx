@@ -1,5 +1,5 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { Platform } from 'react-native';
+import { Platform, useColorScheme } from 'react-native';
 import { Theme, createTheme, ColorMode } from '@fintual/design-system-core';
 
 interface ThemeContextValue {
@@ -17,10 +17,43 @@ export interface ThemeProviderProps {
 
 export function ThemeProvider({ 
   children, 
-  initialMode = 'light',
+  initialMode,
   theme: customTheme 
 }: ThemeProviderProps) {
-  const [mode, setMode] = React.useState<ColorMode>(initialMode);
+  const systemColorScheme = useColorScheme();
+  
+  // Determine the correct initial mode
+  const getInitialMode = (): ColorMode => {
+    if (initialMode) return initialMode;
+    if (systemColorScheme === 'dark') return 'dark';
+    if (systemColorScheme === 'light') return 'light';
+    return 'light'; // Fallback if systemColorScheme is null
+  };
+  
+  const [mode, setMode] = React.useState<ColorMode>(getInitialMode());
+  const [userHasSetMode, setUserHasSetMode] = React.useState<boolean>(!!initialMode);
+  
+  // Sync with system color scheme changes
+  // This handles cases where systemColorScheme becomes available after initial render
+  // or when the system color scheme changes
+  React.useEffect(() => {
+    if (!userHasSetMode) {
+      const targetMode: ColorMode = systemColorScheme === 'dark' ? 'dark' : 'light';
+      setMode(prevMode => {
+        // Update if system color scheme is available and different from current mode
+        if (systemColorScheme !== null && prevMode !== targetMode) {
+          return targetMode;
+        }
+        return prevMode;
+      });
+    }
+  }, [systemColorScheme, userHasSetMode]);
+  
+  // Wrapper for setMode that tracks user interaction
+  const handleSetMode = React.useCallback((newMode: ColorMode | ((prev: ColorMode) => ColorMode)) => {
+    setUserHasSetMode(true);
+    setMode(newMode);
+  }, []);
   
   const theme = React.useMemo(() => {
     const baseTheme = customTheme || createTheme(mode);
@@ -43,8 +76,8 @@ export function ThemeProvider({
 
   const value = React.useMemo(() => ({
     theme,
-    setMode,
-  }), [theme, setMode]);
+    setMode: handleSetMode,
+  }), [theme, handleSetMode]);
 
   return (
     <ThemeContext.Provider value={value}>

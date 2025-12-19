@@ -1,72 +1,38 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   ScrollView,
   View,
   StyleSheet,
   Switch,
-  Animated,
-  LayoutAnimation,
   Platform,
-  UIManager,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider, Text, Heading, useTheme } from '@fintual/design-system-react-native';
 
-// Enable LayoutAnimation on Android
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
-
-// Configure LayoutAnimation for smooth transitions
-const configureLayoutAnimation = () => {
-  LayoutAnimation.configureNext({
-    duration: 300,
-    create: {
-      type: LayoutAnimation.Types.easeInEaseOut,
-      property: LayoutAnimation.Properties.opacity,
-    },
-    update: {
-      type: LayoutAnimation.Types.easeInEaseOut,
-    },
-  });
-};
-
 function AppContent(): JSX.Element {
   const { theme, setMode } = useTheme();
-  const fadeAnim = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    // Trigger layout animation for smooth color transitions
-    configureLayoutAnimation();
-    
-    // Fade animation for smoother transition
-    fadeAnim.setValue(0);
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  }, [theme.mode, fadeAnim]);
 
   const handleToggle = (value: boolean) => {
     setMode(value ? 'dark' : 'light');
   };
 
   return (
-      <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-        <SafeAreaView style={[
-          styles.container,
-          { backgroundColor: theme.colors.background }
-        ]}>
+      <SafeAreaView style={[
+        styles.container,
+        { backgroundColor: theme.colors.background }
+      ]}>
+        <View style={{ flex: 1 }}>
           <StatusBar style={theme.mode === 'dark' ? 'light' : 'dark'} />
           <ScrollView
             contentInsetAdjustmentBehavior="automatic"
-            style={styles.scrollView}
+            style={[styles.scrollView, { backgroundColor: theme.colors.background }]}
           >
           <View style={styles.content}>
             <View style={styles.header}>
-              <Heading level={1}>Fintual Design System</Heading>
+              <View style={styles.titleContainer}>
+                <Heading level={1}>Fintual Design System</Heading>
+              </View>
               <View style={styles.toggleContainer}>
                 <Text color="textSecondary" variant="sm" style={styles.toggleLabel}>
                   {theme.mode === 'light' ? '☀️ Light' : '🌙 Dark'}
@@ -176,8 +142,8 @@ function AppContent(): JSX.Element {
             </View>
           </View>
           </ScrollView>
-        </SafeAreaView>
-      </Animated.View>
+        </View>
+      </SafeAreaView>
   );
 }
 
@@ -194,12 +160,18 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: 24,
+  },
+  titleContainer: {
+    flex: 1,
+    marginRight: 16,
+    flexShrink: 1,
   },
   toggleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    flexShrink: 0,
   },
   toggleLabel: {
     marginRight: 8,
