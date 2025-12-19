@@ -29,14 +29,15 @@ fintual/
 
 ### Prerequisites
 
-- Node.js >= 18.0.0
-- npm >= 9.0.0
+- Node.js 24.11.1
 
 ### Installation
 
-1. Clone the repository and install dependencies:
+1. Clone the repository, use specified node version, and install dependencies:
 
 ```bash
+(nvm install)
+nvm use
 npm install
 ```
 
@@ -74,7 +75,7 @@ import { ThemeProvider, Text, Heading } from '@fintual/design-system-react';
 
 function App() {
   return (
-    <ThemeProvider mode="light">
+    <ThemeProvider>
       <Heading level={1}>Welcome to Fintual</Heading>
       <Text variant="lg" color="primary">
         This is a primary text
@@ -99,7 +100,7 @@ import { ThemeProvider, Text, Heading } from '@fintual/design-system-react-nativ
 
 function App() {
   return (
-    <ThemeProvider mode="light">
+    <ThemeProvider>
       <Heading level={1}>Welcome to Fintual</Heading>
       <Text variant="lg" color="primary">
         This is a primary text
@@ -129,6 +130,10 @@ The `Text` component provides flexible text rendering with consistent styling:
 <Text variant="lg" weight="bold" color="primary" align="center">
   Centered bold primary text
 </Text>
+
+<Text>
+  Default text
+</Text>
 ```
 
 ### Heading Component
@@ -157,12 +162,9 @@ The Design System includes built-in support for Dark Mode through a dynamic colo
 import { ThemeProvider } from '@fintual/design-system-react';
 
 function App() {
-  const [mode, setMode] = useState<'light' | 'dark'>('light');
-
+  const { setMode } = useTheme();
   return (
-    <ThemeProvider mode={mode}>
-      {/* Your app content */}
-    </ThemeProvider>
+    <button onClick={() => setMode('dark')}>Set dark mode</button>
   );
 }
 ```
@@ -185,14 +187,24 @@ The example demonstrates all typography components and theme switching capabilit
 
 ### Mobile Example
 
+**Prerequisites:**
+- Expo CLI (can use via `npx expo` - no global install needed)
+- For iOS Simulator: Xcode (macOS only) - required for running on iOS simulator
+- For physical iPhone: Expo Go app installed on iPhone, iPhone and Mac on the same WiFi network (Xcode not required for Expo Go)
+- For Android Emulator: Android Studio - required for running on Android emulator
+- For physical Android: Expo Go app installed on Android device, device and computer on the same WiFi network
+
 Run the React Native mobile example:
 
 ```bash
 cd examples/mobile
 npm install
-npm run ios    # For iOS
-npm run android # For Android
+1. npm start        # Start Expo development server
+2. npm run ios      # For iOS Simulator (macOS only, requires Xcode)
+3. npm run android  # For Android Emulator (requires Android Studio)
 ```
+
+**Alternative for Physical Devices:** You can scan the QR code displayed by `npm start` with the Expo Go app on your physical device (iOS or Android). No Xcode or Android Studio needed - just ensure your device and computer are on the same WiFi network.
 
 The example demonstrates all typography components optimized for mobile platforms.
 
@@ -249,6 +261,7 @@ npm run clean
 
 - **Why**: Platform-specific optimizations and API differences
 - **Benefit**: Optimal performance and developer experience for each platform
+- **Caveat**: Have to maintain two different versions for each component, but this allows for platform-specific quirks and bugs to be fixed more easily.
 
 ### Core Package Separation
 
@@ -257,8 +270,8 @@ npm run clean
 
 ### Dynamic Theme System
 
-- **Why**: Future-proofing for Dark Mode and theme customization
-- **Benefit**: Easy theme switching, extensible for future theme variations
+- **Why**: Future-proofing for Dark Mode.
+- **Benefit**: Easy theme switching between light and dark modes.
 
 ## 🔮 Future Enhancements
 
@@ -268,13 +281,5 @@ npm run clean
 - Storybook documentation
 - Automated visual regression testing
 - Theme customization API
-- Design token export for design tools
 
-## 📄 License
-
-[Add your license here]
-
-## 🤝 Contributing
-
-[Add contribution guidelines here]
 

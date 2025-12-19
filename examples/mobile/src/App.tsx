@@ -5,29 +5,28 @@ import {
   View,
   StyleSheet,
   Switch,
-  Platform,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider, Text, Heading, useTheme } from '@fintual/design-system-react-native';
 
 function AppContent(): JSX.Element {
-  const { theme, setMode } = useTheme();
+  const { theme, setMode, isLight } = useTheme();
 
   const handleToggle = (value: boolean) => {
     setMode(value ? 'dark' : 'light');
   };
 
   return (
-      <SafeAreaView style={[
-        styles.container,
-        { backgroundColor: theme.colors.background }
-      ]}>
-        <View style={{ flex: 1 }}>
-          <StatusBar style={theme.mode === 'dark' ? 'light' : 'dark'} />
-          <ScrollView
-            contentInsetAdjustmentBehavior="automatic"
-            style={[styles.scrollView, { backgroundColor: theme.colors.background }]}
-          >
+    <SafeAreaView style={[
+      styles.container,
+      { backgroundColor: theme.colors.background }
+    ]}>
+      <View style={{ flex: 1 }}>
+        <StatusBar style={isLight ? 'dark' : 'light'} />
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          style={[styles.scrollView, { backgroundColor: theme.colors.background }]}
+        >
           <View style={styles.content}>
             <View style={styles.header}>
               <View style={styles.titleContainer}>
@@ -35,25 +34,25 @@ function AppContent(): JSX.Element {
               </View>
               <View style={styles.toggleContainer}>
                 <Text color="textSecondary" variant="sm" style={styles.toggleLabel}>
-                  {theme.mode === 'light' ? '☀️ Light' : '🌙 Dark'}
+                  {isLight ? '☀️ Light' : '🌙 Dark'}
                 </Text>
                 <Switch
-                  value={theme.mode === 'dark'}
+                  value={!isLight}
                   onValueChange={handleToggle}
                   trackColor={
                     {
-                        false: theme.colors.border,
-                        true: theme.colors.textSecondary,
+                      false: theme.colors.border,
+                      true: theme.colors.textSecondary,
                     }
                   }
-                  thumbColor={Platform.OS === 'ios' && theme.mode === 'light' ? '#ffffff' : theme.colors.background}
+                  thumbColor={theme.colors.surface}
                 />
               </View>
             </View>
 
             <View style={styles.section}>
               <Heading level={2} style={styles.sectionTitle}>Typography Examples</Heading>
-              
+
               <View style={styles.subsection}>
                 <Heading level={3} style={styles.subsectionTitle}>Headings</Heading>
                 <Heading level={1}>Heading 1 - Main Title</Heading>
@@ -66,7 +65,9 @@ function AppContent(): JSX.Element {
                 <Heading level={3} style={styles.subsectionTitle}>Text Variants</Heading>
                 <Text variant="xs">Extra Small Text (xs)</Text>
                 <Text variant="sm">Small Text (sm)</Text>
-                <Text variant="base">Base Text (base)</Text>
+                <Text
+                //variant="base"
+                >Base Text (base)</Text>
                 <Text variant="lg">Large Text (lg)</Text>
                 <Text variant="xl">Extra Large Text (xl)</Text>
                 <Text variant="2xl">2XL Text (2xl)</Text>
@@ -76,7 +77,9 @@ function AppContent(): JSX.Element {
 
               <View style={styles.subsection}>
                 <Heading level={3} style={styles.subsectionTitle}>Font Weights</Heading>
-                <Text weight="normal">Normal Weight</Text>
+                <Text
+                // weight="normal"
+                >Normal Weight</Text>
                 <Text weight="medium">Medium Weight</Text>
                 <Text weight="semibold">Semibold Weight</Text>
                 <Text weight="bold">Bold Weight</Text>
@@ -84,7 +87,9 @@ function AppContent(): JSX.Element {
 
               <View style={styles.subsection}>
                 <Heading level={3} style={styles.subsectionTitle}>Colors</Heading>
-                <Text color="text">Default Text Color</Text>
+                <Text
+                //color="text"
+                >Default Text Color</Text>
                 <Text color="textSecondary">Secondary Text Color</Text>
                 <Text color="textDisabled">Disabled Text Color</Text>
                 <Text color="primary">Primary Color</Text>
@@ -97,7 +102,9 @@ function AppContent(): JSX.Element {
 
               <View style={styles.subsection}>
                 <Heading level={3} style={styles.subsectionTitle}>Text Alignment</Heading>
-                <Text align="left">Left Aligned Text</Text>
+                <Text
+                //align="left"
+                >Left Aligned Text</Text>
                 <Text align="center">Center Aligned Text</Text>
                 <Text align="right">Right Aligned Text</Text>
               </View>
@@ -105,15 +112,17 @@ function AppContent(): JSX.Element {
               <View style={styles.subsection}>
                 <Heading level={3} style={styles.subsectionTitle}>Line Heights</Heading>
                 <Text lineHeight="tight" style={styles.paragraph}>
-                  Tight Line Height - Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                  Tight Line Height - Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </Text>
-                <Text lineHeight="normal" style={styles.paragraph}>
-                  Normal Line Height - Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                <Text
+                  //lineHeight="normal"
+                  style={styles.paragraph}>
+                  Normal Line Height - Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </Text>
                 <Text lineHeight="relaxed" style={styles.paragraph}>
-                  Relaxed Line Height - Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                  Relaxed Line Height - Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </Text>
               </View>
@@ -141,9 +150,9 @@ function AppContent(): JSX.Element {
               </View>
             </View>
           </View>
-          </ScrollView>
-        </View>
-      </SafeAreaView>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 }
 

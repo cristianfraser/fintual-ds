@@ -4,7 +4,7 @@ import { useTheme } from '../ThemeProvider';
 
 export interface HeadingProps {
   children: React.ReactNode;
-  level?: 1 | 2 | 3 | 4 | 5 | 6;
+  level: 1 | 2 | 3 | 4 | 5 | 6;
   weight?: 'normal' | 'medium' | 'semibold' | 'bold';
   color?: 'text' | 'textSecondary' | 'primary' | 'secondary';
   align?: 'left' | 'center' | 'right';
@@ -23,7 +23,7 @@ const variantMap = {
 
 export function Heading({
   children,
-  level = 1,
+  level,
   weight = 'bold',
   color = 'text',
   align = 'left',
